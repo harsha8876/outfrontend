@@ -27,41 +27,46 @@ import Purpose from './components/about/Purpose';
 import Working from './components/about/Working';
 import ResetPassword from './Forgotpass/ResetPassword';
 import ForgotPassword from './Forgotpass/ForgotPassword';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 function App() {
+  const queryClient = new QueryClient();
+
   return (
-    <div>
-      <Router>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/gigs" element={<Gigs />} />
-          <Route path="/gig/:id" element={<Gig />} />
-          <Route path="/orders" element={<Orders />} />
-          <Route path="/mygigs" element={<Mygigs />} />
-          <Route path="/add" element={<Add />} />
-          <Route path="/chats" element={<Chats />} />
-          <Route path="/chat/:id" element={<Chat />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/pay/:id" element={<Pay />} />
-          <Route path="/success" element={<Success />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/post/:id" element={<Post />} />
-          <Route path="/privacypolicy" element={<PrivacyPolicy />} />
-          <Route path="/terms&service" element={<Termsofser />} />
-          <Route path="/support" element={<Support />} />
-          <Route path="/contactus" element={<ContactUs />} />
-          <Route path="/social" element={<SocialHub />} />
-          <Route path="/faqs" element={<Faqs />} />
-          <Route path="/purpose" element={<Purpose />} />
-          <Route path="/working" element={<Working />} />
-          <Route path="/forgotpassword" element={<ForgotPassword />} />
-          <Route path="/resetpassword/:token" element={<ResetPassword />} />
-        </Routes>
-        <Footer />
-      </Router>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <div>
+        <Router>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/gigs" element={<Gigs />} />
+            <Route path="/gig/:id" element={<Gig />} />
+            <Route path="/orders" element={<Orders />} />
+            <Route path="/mygigs" element={<Mygigs />} />
+            <Route path="/add" element={<Add />} />
+            <Route path="/chats" element={<Chats />} />
+            <Route path="/chat/:id" element={<Chat />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/pay/:id" element={<Pay />} />
+            <Route path="/success" element={<Success />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/post/:id" element={<Post />} />
+            <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+            <Route path="/terms&service" element={<Termsofser />} />
+            <Route path="/support" element={<Support />} />
+            <Route path="/contactus" element={<ContactUs />} />
+            <Route path="/social" element={<SocialHub />} />
+            <Route path="/faqs" element={<Faqs />} />
+            <Route path="/purpose" element={<Purpose />} />
+            <Route path="/working" element={<Working />} />
+            <Route path="/forgotpassword" element={<ForgotPassword />} />
+            <Route path="/resetpassword/:token" element={<ResetPassword />} />
+          </Routes>
+          <Footer />
+        </Router>
+      </div>
+    </QueryClientProvider>
   );
 }
 
