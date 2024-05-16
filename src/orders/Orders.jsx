@@ -16,29 +16,31 @@ const Orders = () => {
       }),
   });
 
-  const [sellers, setSellers] = useState({});
+  const [names, setNames] = useState({});
 
   useEffect(() => {
     if (ordersData) {
-      const sellerIds = ordersData.map(order => order.sellerId);
-      fetchSellers(sellerIds);
+      const userIds = ordersData.map(order =>
+        currentUser.isSeller ? order.buyerId : order.sellerId
+      );
+      fetchNames(userIds);
     }
   }, [ordersData]);
 
-  const fetchSellers = async (sellerIds) => {
+  const fetchNames = async (userIds) => {
     try {
-      const sellersData = await Promise.all(
-        sellerIds.map(sellerId =>
-          newRequest.get(`/users/${sellerId}`).then(res => res.data)
+      const namesData = await Promise.all(
+        userIds.map(userId =>
+          newRequest.get(`/users/${userId}`).then(res => res.data.username)
         )
       );
-      const sellersObject = {};
-      sellersData.forEach(seller => {
-        sellersObject[seller._id] = seller.username;
+      const namesObject = {};
+      userIds.forEach((userId, index) => {
+        namesObject[userId] = namesData[index];
       });
-      setSellers(sellersObject);
+      setNames(namesObject);
     } catch (err) {
-      console.error("Error fetching sellers:", err);
+      console.error("Error fetching names:", err);
     }
   };
 
@@ -53,7 +55,7 @@ const Orders = () => {
     } catch (err) {
       if (err.response.status === 404) {
         const res = await newRequest.post(`/conversations/`, {
-          to: currentUser.seller ? buyerId : sellerId,
+          to: currentUser.isSeller ? buyerId : sellerId,
         });
         navigate(`/chat/${res.data.id}`);
       }
@@ -80,7 +82,7 @@ const Orders = () => {
           <table className="w-full text-center text-white">
             <thead>
               <tr className="h-[50px] p-2 m-2 bg-[#0F1035]">
-                <th>Seller</th>
+                <th>{currentUser.isSeller ? "Buyer" : "Seller"}</th>
                 <th>Title</th>
                 <th>Image</th>
                 <th>Price</th>
@@ -93,7 +95,7 @@ const Orders = () => {
                   className="odd:bg-[#DCF2F1] text-[#0F1035] font-medium items-center py-2"
                   key={order._id}
                 >
-                  <td>{sellers[order.sellerId]}</td>
+                  <td>{currentUser.isSeller ? names[order.buyerId] : names[order.sellerId]}</td>
                   <td
                     onClick={() => handleGigNavigation(order.gigId)}
                     style={{ cursor: "pointer" }}
